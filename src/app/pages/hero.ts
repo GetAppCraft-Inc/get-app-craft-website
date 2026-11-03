@@ -1,4 +1,4 @@
-import { Component, DestroyRef, ElementRef, afterNextRender, inject, signal, viewChild, viewChildren } from '@angular/core';
+import { Component, DestroyRef, ElementRef, afterNextRender, inject, input, signal, viewChild, viewChildren } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { site } from '../site-content';
 import { Logo } from '../shared';
@@ -29,6 +29,9 @@ cards.forEach((card, i) => card.src = `/hero/${String(i + 1).padStart(2, '0')}.w
     <div class="orbit-wordmark" role="img" [attr.aria-label]="site.wordmark"><span class="wm-letter" style="--i:0"><app-logo /></span>@for (ch of wordmarkRest; track $index) {<span class="wm-letter" [style.--i]="$index + 1" aria-hidden="true">{{ ch }}</span>}</div>
     <h1 id="hero-heading">Capable tools <em>for makers.</em></h1>
     <p>{{ site.name }} builds open, native tools for makers. We care about freedom of control and expression.</p>
+    @if (comingSoon()) {
+      <div class="orbit-launch-status"><span class="orbit-launch-label">AppCraft is coming soon</span><p>We’re putting the finishing touches on your creative toolkit.</p></div>
+    } @else {
     <div class="orbit-actions">
       <div class="split" [class.open]="menuOpen()">
         <a class="split-main" [href]="launcherUrl || '/download'" (click)="goDownload($event)"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2v8m-3.5-3.5L8 10l3.5-3.5M3 13h10" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>Download launcher</a>
@@ -39,12 +42,14 @@ cards.forEach((card, i) => card.src = `/hero/${String(i + 1).padStart(2, '0')}.w
       <a class="orbit-ghost" routerLink="/apps"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 2.5h4v4h-4zm7 0h4v4h-4zm-7 7h4v4h-4zm7 0h4v4h-4z" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>Explore crafting apps</a>
     </div>
     <p class="orbit-links">Looking for {{ site.name }} Studio? <a routerLink="/download">Download it</a> or <a routerLink="/download">use it on the web</a>.</p>
+    }
     <p class="orbit-meta"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5a6.5 6.5 0 0 0-2 12.7c.3 0 .4-.2.4-.4v-1.3c-1.8.4-2.2-.8-2.2-.8-.3-.7-.7-.9-.7-.9-.6-.4 0-.4 0-.4.7 0 1 .7 1 .7.6 1 1.5.7 1.9.5 0-.4.2-.7.4-.9-1.4-.2-3-.7-3-3.2 0-.7.3-1.3.7-1.7-.1-.2-.3-.8 0-1.7 0 0 .6-.2 1.8.7a6 6 0 0 1 3.2 0c1.2-.9 1.8-.7 1.8-.7.3.9.1 1.5 0 1.7.4.4.7 1 .7 1.7 0 2.5-1.5 3-3 3.2.3.2.5.6.5 1.2v1.8c0 .2.1.4.4.4A6.5 6.5 0 0 0 8 1.5z" fill="currentColor"/></svg>Open source · macOS · Windows · Linux <span>No subscription required</span></p>
   </div>
 </section>
 `,
 })
 export class HeroComponent {
+  readonly comingSoon = input(false);
   readonly site = site;
   readonly cards = cards;
   // The logo stands in for the first letter of the wordmark.
@@ -59,7 +64,7 @@ export class HeroComponent {
   readonly menuOpen = signal(false);
   private readonly hero = viewChild.required<ElementRef<HTMLElement>>('hero');
   private readonly svg = viewChild.required<ElementRef<SVGSVGElement>>('svg');
-  private readonly router = inject(Router);
+  private readonly router = inject(Router, { optional: true });
   private readonly cardEls = viewChildren<ElementRef<HTMLImageElement>>('card');
 
   constructor() {
@@ -120,6 +125,6 @@ export class HeroComponent {
   pick(p: { os: string; pkg: string }) { this.platform.set(p); this.menuOpen.set(false); }
   goDownload(event: Event) {
     // Without a launcher URL the button takes visitors to the download page instead.
-    if (!this.launcherUrl) { event.preventDefault(); this.router.navigateByUrl('/download'); }
+    if (!this.launcherUrl) { event.preventDefault(); this.router?.navigateByUrl('/download'); }
   }
 }
