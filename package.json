@@ -5,7 +5,9 @@
   "scripts": {
     "start": "ng serve",
     "build": "ng build",
-    "test": "playwright test"
+    "test": "playwright test",
+    "build:launch": "ng build --configuration production,launched",
+    "test:production": "npm run build && playwright test --config playwright.production.config.ts"
   },
   "dependencies": {
     "@angular/common": "^21.0.0",

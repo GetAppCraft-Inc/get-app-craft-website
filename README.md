@@ -42,3 +42,26 @@ npm test
 
 The checks cover desktop/mobile layouts, project filtering, dialog dismissal and focus, theme persistence, navigation, and asset loading.
 # get-app-craft-website
+
+## Coming-soon deployment
+
+The local development server and public build deliberately use different entry points:
+
+| Command | Result |
+| --- | --- |
+| `npm start` | Full application locally, with all routes and features. |
+| `npm run build` | Production coming-soon page, with the existing logo and lavender theme. |
+| `npm run build:launch` | Full production application when you are ready to launch. |
+| `npm test` | Full application's desktop/mobile checks against the development server. |
+| `npm run test:production` | Builds and checks the coming-soon page, including direct app URLs. |
+
+Deploy `dist/appcraft/browser` after running `npm run build`. Configure hosting to serve
+`index.html` for unknown routes, so existing URLs such as `/apps` and `/download` also
+show the coming-soon page. No hostname detection or visitor-side override is used:
+production uses `src/main.coming-soon.ts` instead of `src/main.ts`, excluding the full
+application's routes from that build. Previewing this production output locally will
+therefore also show coming soon; use `npm start` for the full local experience.
+
+When ready, change your deployment build command to `npm run build:launch` and redeploy.
+The `launched` configuration selects the full application entry point while retaining all
+production optimizations. Deployments continue showing coming soon until that change.

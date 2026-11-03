@@ -1,1 +1,69 @@
-{"$schema":"./node_modules/@angular/cli/lib/config/schema.json","version":1,"newProjectRoot":"projects","projects":{"appcraft":{"projectType":"application","root":"","sourceRoot":"src","architect":{"build":{"builder":"@angular/build:application","options":{"outputPath":"dist/appcraft","index":"src/index.html","browser":"src/main.ts","tsConfig":"tsconfig.app.json","assets":[{"glob":"**/*","input":"public"}],"styles":["src/styles.css"]},"configurations":{"production":{"budgets":[{"type":"initial","maximumWarning":"500kB","maximumError":"1MB"}],"outputHashing":"all"},"development":{"optimization":false,"extractLicenses":false,"sourceMap":true}},"defaultConfiguration":"production"},"serve":{"builder":"@angular/build:dev-server","configurations":{"production":{"buildTarget":"appcraft:build:production"},"development":{"buildTarget":"appcraft:build:development"}},"defaultConfiguration":"development"}}}},"cli":{"analytics":false}}
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "appcraft": {
+      "projectType": "application",
+      "root": "",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "outputPath": "dist/appcraft",
+            "index": "src/index.html",
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+              "src/styles.css"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                }
+              ],
+              "outputHashing": "all",
+              "browser": "src/main.coming-soon.ts"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
+            "launched": {
+              "browser": "src/main.ts"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "appcraft:build:production"
+            },
+            "development": {
+              "buildTarget": "appcraft:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
+}
